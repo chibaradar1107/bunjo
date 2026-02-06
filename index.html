@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>千葉レーダー | 千葉県内の分譲地・建売キュレーション</title>
+    <!-- Google Fonts: Noto Serif JP (明朝体) & Noto Sans JP -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --brand-primary: #0f172a;    /* 深みのあるネイビー */
+            --brand-accent: #c5a059;     /* シャンパンゴールド */
+            --brand-bg: #fdfdfd;         /* クリーンな白 */
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--brand-bg);
+            color: #1e293b;
+            line-height: 1.8;
+        }
+
+        .font-mincho {
+            font-family: 'Noto Serif JP', serif;
+            letter-spacing: 0.05em;
+        }
+
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Hero Design */
+        .hero-section {
+            background-color: #f4f4f4;
+            position: relative;
+        }
+
+        /* UI Elements */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .md-card {
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .md-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            border-color: var(--brand-accent);
+        }
+
+        .btn-black {
+            background-color: #111;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .btn-black:hover {
+            background-color: #333;
+            transform: translateY(-1px);
+        }
+
+        /* Floating DM Button */
+        .floating-dm {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="glass-nav fixed top-0 w-full z-50">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                    <span class="material-icons-outlined text-white text-base">radar</span>
+                </div>
+                <h1 class="text-xl font-bold tracking-tighter font-montserrat" style="color: var(--brand-primary)">CHIBA RADAR</h1>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-widest text-slate-400">
+                <a href="#high" class="hover:text-black transition-colors">ハイブランド</a>
+                <a href="#mid" class="hover:text-black transition-colors">ハウスメーカー</a>
+                <a href="https://www.threads.com/@chiba_home_radar?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="text-amber-600">Threads DM</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section pt-48 pb-32 px-6">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-4xl md:text-6xl font-mincho text-slate-900 mb-12 leading-snug">
+                家づくりでわからないことは、<br>
+                <span>DMください。</span>
+            </h2>
+            
+            <div class="max-w-2xl mx-auto mb-12">
+                <p class="text-slate-600 font-light leading-relaxed">
+                    「千葉レーダー」では、千葉県内のハウスメーカー選びから<br class="hidden md:block">
+                    土地探しのコツまで日々発信中。<br>
+                    不安なことや疑問点があれば、お気軽にご相談ください。
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center space-y-6">
+                <a href="https://www.threads.com/@chiba_home_radar?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="btn-black px-12 py-5 rounded-full font-bold shadow-xl flex items-center tracking-widest text-sm">
+                    <span class="material-icons-outlined mr-2">send</span>
+                    相談をDMで送る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter -->
+    <div class="container mx-auto px-6 -mt-6 relative z-10 text-center">
+        <div class="bg-white/90 backdrop-blur inline-flex p-1.5 rounded-full shadow-lg border border-slate-100">
+            <button onclick="filterItems('all')" id="tab-all" class="px-8 py-2.5 rounded-full text-[10px] font-bold tracking-widest transition-all bg-black text-white">すべて</button>
+            <button onclick="filterItems('high')" id="tab-high" class="px-8 py-2.5 rounded-full text-[10px] font-bold tracking-widest text-slate-400 hover:text-black transition-all">ハイブランド</button>
+            <button onclick="filterItems('mid')" id="tab-mid" class="px-8 py-2.5 rounded-full text-[10px] font-bold tracking-widest text-slate-400 hover:text-black transition-all">ハウスメーカー</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-24">
+        
+        <!-- Premium Section -->
+        <div id="high-brand-container" class="mb-32">
+            <div class="text-center mb-16">
+                <p class="text-amber-600 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">High-End Selection</p>
+                <h3 class="text-2xl font-bold tracking-tight text-slate-900">ハイブランド</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="high-grid">
+                <!-- Data injected via JS -->
+            </div>
+        </div>
+
+        <!-- Standard Section -->
+        <div id="mid-tier-container">
+            <div class="text-center mb-16">
+                <p class="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-2">Reliable Quality</p>
+                <h3 class="text-2xl font-bold tracking-tight text-slate-900">ハウスメーカー</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="mid-grid">
+                <!-- Data injected via JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Final DM Section -->
+    <section class="bg-white py-32 px-6 border-t border-slate-50">
+        <div class="container mx-auto max-w-xl text-center">
+            <h3 class="text-2xl font-mincho mb-8">理想の土地、見つからない時は？</h3>
+            <p class="text-slate-500 mb-12 text-sm leading-loose">
+                ネットに出る前の「未公開情報」や、どのメーカーが自分に合うかなど、<br>
+                千葉レーダーが個別にお答えします。Threadsにてお気軽にメッセージを。
+            </p>
+            <a href="https://www.threads.com/@chiba_home_radar?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="inline-flex items-center justify-center w-full px-10 py-5 bg-black text-white rounded-lg font-bold hover:opacity-80 transition-all shadow-lg text-sm tracking-widest">
+                <span class="material-icons-outlined mr-3 text-amber-500">chat</span>
+                DMで無料相談する
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-20 border-t border-slate-50">
+        <div class="container mx-auto px-6 text-center">
+            <h4 class="text-lg font-bold font-montserrat tracking-[0.3em] mb-8">CHIBA RADAR</h4>
+            <div class="flex justify-center space-x-10 mb-12 text-[10px] font-bold tracking-widest text-slate-400">
+                <a href="https://www.threads.com/@chiba_home_radar?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="hover:text-black">THREADS</a>
+                <a href="https://www.instagram.com/chiba_home_radar?igsh=ZTh0MnJ2d3l3aHkx&utm_source=qr" target="_blank" class="hover:text-black uppercase">Instagram</a>
+            </div>
+            <p class="text-[9px] text-slate-300 tracking-[0.2em] uppercase">&copy; 2026 CHIBA RADAR. NAVIGATION FOR CHIBA LIFE.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <a href="https://www.threads.com/@chiba_home_radar?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="floating-dm w-14 h-14 bg-black text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+        <span class="material-icons-outlined text-xl text-amber-500">forum</span>
+    </a>
+
+    <script>
+        const highBrandData = [
+            { name: "住友林業", url: "https://sfc.jp/bunjyo/sell/kenmap/?cd=12", desc: "木の魅力を最大限に引き出す、上質な住空間。千葉県内でも有数の資産価値を誇る分譲地を展開。" },
+            { name: "積水ハウス", url: "https://www.sekisuihouse.co.jp/bunjou/12chiba", desc: "圧倒的な開放感と耐震性. 一邸一邸のクオリティに妥協しない、邸宅スタイルの街づくり。" },
+            { name: "ヘーベルハウス", url: "https://www.asahi-kasei.co.jp/hebel/bunjyo/list/index.html/?pref=chiba", desc: "比類なき堅牢さを持つALC住宅。世代を超えて住み継がれる、千葉の都市型ライフをサポート。" },
+            { name: "ミサワホーム", url: "https://www.misawa.co.jp/fudosan/search/contents/code/search_result?pref_check%5b%5d=12", desc: "デザインのミサワ。圧倒的な収納力を持つ「蔵」のある家など、独創的なアイディアが満載。" },
+            { name: "パナソニックホームズ", url: "https://homes.panasonic.com/kyoten/bunjyo/area/12/", desc: "強靭な鉄骨構造と家事楽動線。パナソニックグループの最新設備が標準装備されたスマートライフ。" },
+            { name: "ダイワハウス", url: "https://www.daiwahouse.co.jp/bunjo/kanto/chiba.asp", desc: "xevoシリーズの高い基本性能。全国的な実績に基づいた、安心感のある大規模分譲地が魅力。" },
+            { name: "三菱地所ホーム", url: "https://www.mec-h.com/house/detail/D73X00260", desc: "完全自由設計のプライド。全館空調「エアロテック」による、24時間365日の快適性をその手に。" }
+        ];
+
+        const midTierData = [
+            { name: "セキスイハイム", url: "https://www.tokyo816.jp/bunjou/search_area?pref_check%5B%5D=12", desc: "工場生産ならではの高精度な住まい。ソーラー住宅の先駆者として、光熱費を抑えるスマートな暮らしを。" },
+            { name: "三井ホーム", url: "https://www.mitsuihome.co.jp/bunjyo/contents/code/search_result/?pref_check%5B%5D=12&r_kind_type%5B%5D=1&r_kind_type%5B%5D=2-1&r_kind_type%5B%5D=2-2&r_kind_type%5B%5D=3&submit=%E6%A4%9C%E7%B4%A2&all_pref=1", desc: "気品ある洋風デザインと高気密・高断熱。千葉の街並みに映える、エレガントな住空間を創出。" },
+            { name: "トヨタホーム", url: "https://town.toyotahome.co.jp/chiba", desc: "自動車製造で培ったモノづくりの技術。60年という長期保証で、長く住み続けるほどに安心を実感。" },
+            { name: "一条工務店", url: "https://www.ichijo.co.jp/land/area/?pref=12", desc: "「家は、性能。」業界トップレベルの断熱・省エネ性能を、リアルな分譲地・建売で体感可能。" },
+            { name: "ヤマダホームズ", url: "https://estate.yamadahomes.co.jp/feature/2681/", desc: "くらしを彩る「スーパーフル装備」など、高品質な設備が最初から手に入る圧倒的な満足感。" },
+            { name: "ウィザースホーム", url: "https://with-e-home.com/estate/search/category/%E5%8D%83%E8%91%89%E7%9C%8C/", desc: "君津から始まった地域密着ブランド。外壁タイルの美しさと、千葉の風土を知り尽くした提案力。" },
+            { name: "桧家住宅", url: "https://www.hinokiya.jp/bunjyo/search/?pref=10", desc: "全館空調「Z空調」の代名詞。デザインとコスト、そして機能性のバランスに優れた次世代住宅。" },
+            { name: "ヤマト住建", url: "https://www.yamatojk.co.jp/saleinlots/top", desc: "世界基準の断熱性能を身近に。家族の健康を守り、光熱費を削減する「高性能住宅」に注力。" },
+            { name: "タマホーム", url: "https://www.tamahome.jp/kodatebunjyo/kanto/chiba", desc: "圧倒的なコストパフォーマンス。手の届く価格で、理想のマイホームを叶えるための力強い味方。" }
+        ];
+
+        function createCard(item) {
+            return `
+                <div class="md-card flex flex-col group" onclick="window.open('${item.url}', '_blank')">
+                    <div class="p-8 flex-grow">
+                        <div class="flex justify-between items-start mb-6">
+                            <h4 class="text-xl font-bold text-slate-900">${item.name}</h4>
+                            <span class="material-icons-outlined text-slate-200 group-hover:text-amber-500 transition-colors">north_east</span>
+                        </div>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-6 font-medium">
+                            ${item.desc}
+                        </p>
+                    </div>
+                    <div class="px-8 pb-8">
+                        <div class="flex items-center justify-center w-full py-3.5 bg-slate-50 text-slate-900 border border-slate-100 rounded text-[10px] font-bold tracking-widest group-hover:bg-black group-hover:text-white transition-all">
+                            公式サイトを見る
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGrids() {
+            document.getElementById('high-grid').innerHTML = highBrandData.map(createCard).join('');
+            document.getElementById('mid-grid').innerHTML = midTierData.map(createCard).join('');
+        }
+
+        function filterItems(category) {
+            const highContainer = document.getElementById('high-brand-container');
+            const midContainer = document.getElementById('mid-tier-container');
+            const tabs = ['all', 'high', 'mid'];
+
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                el.classList.remove('bg-black', 'text-white');
+                el.classList.add('text-slate-400');
+            });
+            
+            const activeTab = document.getElementById(`tab-${category}`);
+            activeTab.classList.add('bg-black', 'text-white');
+            activeTab.classList.remove('text-slate-400');
+
+            if (category === 'all') {
+                highContainer.style.display = 'block';
+                midContainer.style.display = 'block';
+            } else if (category === 'high') {
+                highContainer.style.display = 'block';
+                midContainer.style.display = 'none';
+            } else if (category === 'mid') {
+                highContainer.style.display = 'none';
+                midContainer.style.display = 'block';
+            }
+        }
+
+        window.onload = renderGrids;
+    </script>
+</body>
+</html>
